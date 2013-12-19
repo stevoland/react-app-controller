@@ -26,6 +26,26 @@ var ControllerInterface = utils.extend(Base.ControllerInterface, {
 
   defaultRender: function() {
     return this.state.page.render();
+  },
+
+  componentWillUpdate: function (nextProps, nextState) {
+    if (typeof this.state.page.pageWillUnmount === 'function') {
+      this.state.page.pageWillUnmount();
+    }
+
+    if (typeof nextState.page.pageWillMount === 'function') {
+      nextState.page.pageWillMount();
+    }
+  },
+
+  componentDidUpdate: function (prevProps, prevState) {
+    if (typeof prevState.page.pageDidUnmount === 'function') {
+      prevState.page.pageDidUnmount();
+    }
+
+    if (typeof this.state.page.pageDidMount === 'function') {
+      this.state.page.pageDidMount();
+    }
   }
 });
 
@@ -36,15 +56,12 @@ function Page(controller, props) {
 }
 
 Page.prototype = {
-  // TODO: pageDidMount, pageWillUnmount and figure out where to call them from
-  // the controller
-
   getDOMNode: function() {
     return this.controller.getDOMNode();
   },
 
   isMounted: function() {
-    return this.controller.isMounted();
+    return (this.controller.state.page === this);
   }
 };
 
