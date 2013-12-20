@@ -1,7 +1,7 @@
 "use strict";
 
-var React         = require('react-tools/build/modules/React');
-var invariant     = require('react-tools/build/modules/invariant');
+var React         = require('react');
+var invariant     = require('react/lib/invariant');
 var NotFoundError = require('./not-found-error');
 var utils         = require('./utils');
 var Base          = require('./index');
